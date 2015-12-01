@@ -1,39 +1,44 @@
+require 'byebug'
 module Sapp
   class Base
 
-    attr_reader :routes
-
-    def initialize
-      @routes = {}
-      define_verbs
+    def self.routes
+      @routes ||= Hash.new
     end
 
-    def call env
-      request = Rack::Request env
-      verb    = request.request_method
-      path    = request.path_info
+    def self.call env
+      @request = Rack::Request.new env
+      verb     = @request.request_method
+      path     = @request.path_info
 
-      handler = @routes.fetch(verb, {}).fetch(path, nil)
+      handler  = @routes.fetch(verb, {}).fetch(path, nil)
       handler.call
     end
 
-    def define_verbs
+    def self.define_verbs
       %w(get put post patch delete).each do |v|
-        self.class.create_method v
+        create_method v
       end
     end
 
     private
-    def self.create_method verb
-      send(:define_method, verb) do |path, &handler|
-        route verb.upcase, path, &handler
+
+      def self.create_method verb
+        send(:define_singleton_method, verb) do |path, &handler|
+          route verb.upcase, path, &handler
+        end
       end
-    end
 
-    def route verb, path, &handler
-      @routes[verb] ||= {}
-      @routes[verb][path] = handler
-    end
+      def self.route verb, path, &handler
+        routes[verb] ||= Hash.new
+        routes[verb][path] = handler
+      end
 
+      def self.params
+        @request.params
+      end
+
+      define_verbs
   end
 end
+
