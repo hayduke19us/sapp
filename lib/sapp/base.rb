@@ -26,7 +26,7 @@ module Sapp
     private
     def self.create_method verb
       send(:define_method, verb) do |path, &handler|
-        route verb, path, &handler
+        route verb.upcase, path, &handler
       end
     end
 

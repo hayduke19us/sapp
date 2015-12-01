@@ -27,14 +27,9 @@ class SappTest < Minitest::Test
       'Hello Mr. Foo'
     end
 
-    handler = @sapp.routes['get']['/foo']
+    handler = @sapp.routes['GET']['/foo']
     assert handler
     assert_equal "Hello Mr. Foo", handler.call, "Handler should be  a Proc"
-  end
-
-  focus
-  def test_sapp_has_a_call_method_that_returns_a_rack_tuple
-    assert @sapp.call.count, 3
   end
 
 end
