@@ -15,14 +15,26 @@ module Sapp
     extend Resources
 
     def self.call env
-      byebug
+      # Create request object
       request = Rack::Request.new env
 
-      handler   = Sapp::Handler.new request, routes
-      unwrapped = handler.unwrap
-      response  = Sapp::Response.new handler.status, unwrapped
+      # Create handler object for calling the Proc
+      handler = Sapp::Handler.new request, routes
 
-      response.process_handler
+      # Check route exist, process response
+      if route_map.exist? handler.verb, handler.path
+
+        unwrapped = handler.unwrap
+
+        response  = Sapp::Response.new handler.status, unwrapped
+
+        response.process_handler
+
+      else
+
+        route_map.not_found!
+
+      end
     end
 
   end

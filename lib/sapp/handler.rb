@@ -6,7 +6,7 @@ module Sapp
   # We need access to #params and #status
   class Handler
 
-    attr_reader :routes, :verb, :path, :status
+    attr_reader :verb, :path, :status, :routes
 
     def initialize request, routes
       @request = request
@@ -17,15 +17,7 @@ module Sapp
     end
 
     def unwrap
-      if route_exist?
-        instance_eval(&handler)
-      else
-        [404, {}, ["Oops! No route for #{verb} #{path}"]]
-      end
-    end
-
-    def route_exist?
-      routes[verb] && handler  ? true : false
+      instance_eval(&handler)
     end
 
     private
