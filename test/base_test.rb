@@ -66,7 +66,6 @@ class BaseTest < Minitest::Test
     assert JSON.parse(last_response.body)
   end
 
-  focus
   def test_if_the_response_is_a_hash_change_the_content_type_accordingly 
     get '/json'
     assert_equal 'application/json', last_response.headers["Content-Type"]
