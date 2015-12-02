@@ -2,31 +2,31 @@ module Sapp
   module Resources
 
     def resources name
-      route "GET", "/#{name}s"
-      route "GET", "/#{name}"
-      route "POST", "/#{name}"
-      route "PATCH", "/#{name}/:id"
-      route "DELETE", "/#{name}/:id"
+      add "GET", "/#{name}s"
+      add "GET", "/#{name}"
+      add "POST", "/#{name}"
+      add "PATCH", "/#{name}/:id"
+      add "DELETE", "/#{name}/:id"
     end
 
     def index name, &block
-      route "GET", "/#{name}", &block
+      add "GET", "/#{name}", &block
     end
 
     def show name, &block
-      route "GET", "/#{name}", &block
+      add "GET", "/#{name}", &block
     end
 
     def update name, &block
-      route "PATCH", "/#{name}/:id", &block
+      add "PATCH", "/#{name}/:id", &block
     end
 
     def create name, &block
-      route "POST", "/#{name}", &block
+      add "POST", "/#{name}", &block
     end
 
     def destroy name, &block
-      route "DELETE", "/#{name}", &block
+      add "DELETE", "/#{name}", &block
     end
 
   end

@@ -13,44 +13,32 @@ module Sapp
       route_map.routes
     end
 
+    def add verb, path, &handler
+      route_map.add verb, path, &handler
+    end
+
     def get path, &handler
-      route "GET", path, &handler
+      add "GET", path, &handler
     end
 
     def post path, &handler
-      route "POST", path, &handler
+      add "POST", path, &handler
     end
 
     def put path, &handler
-      route "PUT", path, &handler
+      add "PUT", path, &handler
     end
 
     def patch path, &handler
-      route "PATCH", path, &handler
+      add "PATCH", path, &handler
     end
 
     def delete path, &handler
-      route "DELETE", path, &handler
+      add "DELETE", path, &handler
     end
 
     def head path, &handler
-      route "HEAD", path, &handler
-    end
-
-
-    private
-    def empty_proc
-      @empty_proc ||= Proc.new { "Placeholder" }
-    end
-
-    def route verb, path, &handler
-      routes[verb] ||= Hash.new
-
-      if block_given?
-        routes[verb][path] = handler
-      else
-        routes[verb][path] = empty_proc
-      end
+      add "HEAD", path, &handler
     end
 
   end
