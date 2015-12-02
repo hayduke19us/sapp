@@ -1,5 +1,7 @@
 require 'byebug'
 require_relative 'routes'
+require_relative 'response'
+require_relative 'handler'
 
 module Sapp
   class Base
@@ -10,28 +12,21 @@ module Sapp
     end
 
     def self.call env
+      byebug
       @request = Rack::Request.new env
-      verb     = @request.request_method
-      path     = @request.path_info
 
-      handler  = @routes.fetch(verb, {}).fetch(path, nil)
-      handler.call
+      handler  = Sapp::Handler.new @request, @routes
+      # response = Sapp::Response.new handler.status, handler.unwrap
+      handler.unwrap
+
     end
 
     private
 
-      def self.route verb, path, &handler
-        routes[verb] ||= Hash.new
-        routes[verb][path] = handler
-      end
-
-      def self.params
-        @request.params
-      end
-
-      def self.status=(stat)
-        @status = stat
-      end
+    def self.route verb, path, &handler
+      routes[verb] ||= Hash.new
+      routes[verb][path] = handler
+    end
 
   end
 end
