@@ -44,7 +44,11 @@ class SampleApp3 < Sapp::Base
   resources "user"
 
   index "users" do
-    "Hello"
+    "All Users"
+  end
+
+  show "user" do
+    "One User"
   end
 
 end
@@ -91,10 +95,9 @@ class BaseTest < Minitest::Test
     assert_equal 999, last_response.status
   end
 
-  focus
   def test_a_user_can_define_routes_with_reources_and_map_handler_to_index_show_etc
     @app = SampleApp3
     get '/users'
-    assert_equal 1, last_response.body
+    assert_equal "All Users", last_response.body
   end
 end

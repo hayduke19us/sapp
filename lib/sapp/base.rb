@@ -16,7 +16,6 @@ module Sapp
     end
 
     def self.call env
-      byebug
       request = Rack::Request.new env
 
       handler   = Sapp::Handler.new request, @routes
