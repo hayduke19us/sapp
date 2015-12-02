@@ -1,7 +1,17 @@
+require_relative 'route_map'
+
 module Sapp
 
   # Use exclusively as a mixin for Base
   module Routes
+
+    def route_map
+      @route_map ||= RouteMap.new
+    end
+
+    def routes
+      route_map.routes
+    end
 
     def get path, &handler
       route "GET", path, &handler

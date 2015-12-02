@@ -2,6 +2,7 @@ require_relative 'routes'
 require_relative 'response'
 require_relative 'handler'
 require_relative 'resources'
+require_relative 'route_map'
 
 require 'byebug'
 
@@ -13,16 +14,11 @@ module Sapp
     # Support for Rails like resources with corresponding views
     extend Resources
 
-    attr_reader :routes
-
-    def self.routes
-      @routes ||= Hash.new
-    end
-
     def self.call env
+      byebug
       request = Rack::Request.new env
 
-      handler   = Sapp::Handler.new request, @routes
+      handler   = Sapp::Handler.new request, routes
       unwrapped = handler.unwrap
       response  = Sapp::Response.new handler.status, unwrapped
 

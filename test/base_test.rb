@@ -25,6 +25,10 @@ class SampleApp < Sapp::Base
     "the status should be set to #{params}"
   end
 
+  get '/foo/:id' do 
+    "This should return a user"
+  end
+
 end
 
 class SampleApp2 < Sapp::Base
@@ -79,9 +83,15 @@ class BaseTest < Minitest::Test
     @app || SampleApp
   end
 
-  def test_we_can_make_a_request
+  def test_GET
     get '/foo'
     assert last_response
+  end
+
+  def test_GET_with_url_params
+    skip
+    get 'foo/2'
+    assert_equal 1, last_response
   end
 
   def test_post
