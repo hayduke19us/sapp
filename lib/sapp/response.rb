@@ -1,53 +1,37 @@
 module Sapp
+
+  # In charge of creating the tuple
+  # deciding content-type and
+  # raising errors 
   class Response
 
-    attr_reader :routes, :verb, :path
+    attr_reader :handler, :status
 
-    def initialize params, status=nil
-      @params = params
-      @status = status
+    def initialize status, handler
+      @status  = status
+      @handler = handler
     end
 
-    def finish
-      if route_exist?
-        result = instance_eval(&handler)
-        process_result result
-      else
-        [404, {}, ["Oops! No route for #{verb} #{path}"]]
-      end
-    end
-
-    def route_exist?
-      @routes[verb] && handler  ? true : false
-    end
-
-    private
-
-    def process_result result
-      case result.class
+    # With defaults
+    def process_handler
+      case handler
         when String
-          create_tuple 200, result
+          create_tuple 200, handler
         when Array
-          result
+          handler
         when Hash
-          create_tuple 200, result.to_json
+          create_tuple 200, handler.to_json
         else
           [500, {}, ["response must be a string, tuple, or hash"]]
       end
     end
 
-    def create_tuple status, body
-      set_status status
-      [@status, {}, body]
+    private
+
+    # If status at initialization use, else use default
+    def create_tuple default_status, body
+      [status ? status : default_status, {}, body]
     end
 
-    def set_status
-      @status ||= status
-    end
-
-    def handler
-      @routes[verb][path]
-    end
   end
-
 end

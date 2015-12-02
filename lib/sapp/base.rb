@@ -16,8 +16,9 @@ module Sapp
       @request = Rack::Request.new env
 
       handler  = Sapp::Handler.new @request, @routes
-      # response = Sapp::Response.new handler.status, handler.unwrap
-      handler.unwrap
+      response = Sapp::Response.new handler.status, handler.unwrap
+
+      response.process_handler
 
     end
 
