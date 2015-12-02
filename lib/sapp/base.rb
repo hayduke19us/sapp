@@ -1,4 +1,5 @@
 require 'byebug'
+
 module Sapp
   class Base
 
@@ -36,6 +37,10 @@ module Sapp
 
       def self.params
         @request.params
+      end
+
+      def self.status=(stat)
+        @status = stat
       end
 
       define_verbs
