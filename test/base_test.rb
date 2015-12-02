@@ -43,6 +43,24 @@ class SampleApp3 < Sapp::Base
 
   resources "user"
 
+end
+
+class SampleApp4 < Sapp::Base
+
+  index "users" do
+    "All Users"
+  end
+
+  show "user" do
+    "One User"
+  end
+
+end
+
+class SampleApp5 < Sapp::Base
+
+  resources "user"
+
   index "users" do
     "All Users"
   end
@@ -90,14 +108,27 @@ class BaseTest < Minitest::Test
     assert_equal 'application/json', last_response.headers["Content-Type"]
   end
 
-  def test_a_user_can_set_the_status_from_within_the_handler
+  def test_can_set_the_status_from_within_the_handler
     get '/status', status: '999'
     assert_equal 999, last_response.status
   end
 
-  def test_a_user_can_define_routes_with_reources_and_map_handler_to_index_show_etc
+  def test_can_define_routes_with_resources
     @app = SampleApp3
     get '/users'
-    assert_equal "All Users", last_response.body
+    assert_equal "Placeholder", last_response.body
   end
+
+  def test_can_define_routes_with_CRUD_methods_and_block
+    @app = SampleApp4
+    get '/users'
+    assert_equal "All Users" , last_response.body
+  end
+
+  def test_using_CRUD_methods_overrides_the_handler
+    @app = SampleApp5
+    get '/users'
+    assert_equal "All Users" , last_response.body
+  end
+
 end

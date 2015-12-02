@@ -1,6 +1,7 @@
 require_relative 'routes'
 require_relative 'response'
 require_relative 'handler'
+require_relative 'resources'
 
 require 'byebug'
 
@@ -8,6 +9,9 @@ module Sapp
   class Base
     # All RESTful verb methods in Sapp::Routes
     extend Routes
+
+    # Support for Rails like resources with corresponding views
+    extend Resources
 
     attr_reader :routes
 
