@@ -1,7 +1,8 @@
-require 'byebug'
 require_relative 'routes'
 require_relative 'response'
 require_relative 'handler'
+
+require 'byebug'
 
 module Sapp
   class Base
@@ -23,13 +24,6 @@ module Sapp
       response  = Sapp::Response.new handler.status, unwrapped
 
       response.process_handler
-    end
-
-    private
-
-    def self.route verb, path, &handler
-      routes[verb] ||= Hash.new
-      routes[verb][path] = handler
     end
 
   end

@@ -39,6 +39,16 @@ class SampleApp2 < Sapp::Base
 
 end
 
+class SampleApp3 < Sapp::Base
+
+  resources "user"
+
+  index "users" do
+    "Hello"
+  end
+
+end
+
 
 class BaseTest < Minitest::Test
   include Rack::Test::Methods
@@ -70,14 +80,21 @@ class BaseTest < Minitest::Test
     get '/json'
     assert JSON.parse(last_response.body)
   end
+
   def test_if_the_response_is_a_hash_change_the_content_type_accordingly 
     get '/json'
     assert_equal 'application/json', last_response.headers["Content-Type"]
   end
 
-  focus
   def test_a_user_can_set_the_status_from_within_the_handler
     get '/status', status: '999'
     assert_equal 999, last_response.status
+  end
+
+  focus
+  def test_a_user_can_define_routes_with_reources_and_map_handler_to_index_show_etc
+    @app = SampleApp3
+    get '/users'
+    assert_equal 1, last_response.body
   end
 end

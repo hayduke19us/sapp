@@ -1,8 +1,7 @@
 module Sapp
 
   # In charge of creating the tuple
-  # deciding content-type and
-  # raising errors 
+  # deciding Content-Type and returning status.
   class Response
 
     attr_reader :handler, :status, :headers
