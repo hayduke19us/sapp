@@ -1,7 +1,9 @@
 require 'byebug'
+require_relative 'routes'
 
 module Sapp
   class Base
+    extend Routes
 
     def self.routes
       @routes ||= Hash.new
@@ -16,19 +18,7 @@ module Sapp
       handler.call
     end
 
-    def self.define_verbs
-      %w(get put post patch delete).each do |v|
-        create_method v
-      end
-    end
-
     private
-
-      def self.create_method verb
-        send(:define_singleton_method, verb) do |path, &handler|
-          route verb.upcase, path, &handler
-        end
-      end
 
       def self.route verb, path, &handler
         routes[verb] ||= Hash.new
@@ -43,7 +33,6 @@ module Sapp
         @status = stat
       end
 
-      define_verbs
   end
 end
 
