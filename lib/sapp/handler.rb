@@ -38,7 +38,7 @@ module Sapp
       @request.params
     end
 
-    def status=(code)
+    def set_status code
       @status = code
     end
   end

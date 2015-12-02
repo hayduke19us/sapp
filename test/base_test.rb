@@ -20,6 +20,11 @@ class SampleApp < Sapp::Base
     { name: 'pete', height: 6.1, hair: 'black' }
   end
 
+  get '/status' do
+    set_status params["status"]
+    "the status should be set to #{params}"
+  end
+
 end
 
 class SampleApp2 < Sapp::Base
@@ -65,9 +70,14 @@ class BaseTest < Minitest::Test
     get '/json'
     assert JSON.parse(last_response.body)
   end
-
   def test_if_the_response_is_a_hash_change_the_content_type_accordingly 
     get '/json'
     assert_equal 'application/json', last_response.headers["Content-Type"]
+  end
+
+  focus
+  def test_a_user_can_set_the_status_from_within_the_handler
+    get '/status', status: '999'
+    assert_equal 999, last_response.status
   end
 end

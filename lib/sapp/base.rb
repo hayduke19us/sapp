@@ -15,10 +15,12 @@ module Sapp
     end
 
     def self.call env
+      byebug
       request = Rack::Request.new env
 
-      handler  = Sapp::Handler.new request, @routes
-      response = Sapp::Response.new handler.status, handler.unwrap
+      handler   = Sapp::Handler.new request, @routes
+      unwrapped = handler.unwrap
+      response  = Sapp::Response.new handler.status, unwrapped
 
       response.process_handler
     end
