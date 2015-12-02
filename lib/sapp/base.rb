@@ -5,21 +5,22 @@ require_relative 'handler'
 
 module Sapp
   class Base
+    # All RESTful verb methods in Sapp::Routes
     extend Routes
+
+    attr_reader :routes
 
     def self.routes
       @routes ||= Hash.new
     end
 
     def self.call env
-      byebug
-      @request = Rack::Request.new env
+      request = Rack::Request.new env
 
-      handler  = Sapp::Handler.new @request, @routes
+      handler  = Sapp::Handler.new request, @routes
       response = Sapp::Response.new handler.status, handler.unwrap
 
       response.process_handler
-
     end
 
     private

@@ -1,8 +1,9 @@
 module Sapp
 
-
   # In charge of checking for a route match and
-  # setting the status
+  # setting the status, contains the unwrap method
+  # to call the handler proc in the context of this class.
+  # We need access to #params and #status
   class Handler
 
     attr_reader :routes, :verb, :path, :status

@@ -12,8 +12,12 @@ class SampleApp < Sapp::Base
     [200, {}, [params]]
   end
 
-  patch '/boo' do
+  patch '/bar' do
     [200, {}, [params]]
+  end
+
+  get '/json' do
+    { name: 'pete', height: 6.1, hair: 'black' }
   end
 
 end
@@ -55,5 +59,16 @@ class BaseTest < Minitest::Test
   def test_that_routes_can_change
     @app = SampleApp2
     assert_equal 2, app.routes.count
+  end
+
+  def test_if_the_response_body_is_a_hash_change_to_json_for_client
+    get '/json'
+    assert JSON.parse(last_response.body)
+  end
+
+  focus
+  def test_if_the_response_is_a_hash_change_the_content_type_accordingly 
+    get '/json'
+    assert_equal 'application/json', last_response.headers["Content-Type"]
   end
 end
