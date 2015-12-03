@@ -1,3 +1,5 @@
+
+require 'byebug'
 module Sapp
   class Path
 
@@ -38,17 +40,30 @@ module Sapp
     end
 
     def create_path
-      path = keys.merge(paths)
-      Hash[path.sort]
+      byebug
+      begin
+
+        path   = keys.merge(paths)
+        sorted = Hash[path.sort]
+
+        if prefix_is_controller? sorted
+          sorted
+        else
+          raise ArgumentError, "A Path can't begin with a symbol"
+        end
+
+      end
     end
-
-
 
     def counter
       @counter
     end
 
     private
+
+    def prefix_is_controller? path
+      path[0].match(/\A^:/) ? false : true
+    end
 
     def count
       @counter += 1
