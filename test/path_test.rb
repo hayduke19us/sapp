@@ -41,6 +41,7 @@ class PathTest < Minitest::Test
     assert_equal ":id", @path.parse[1]
   end
 
+  focus
   def test_if_a_path_is_added_with_a_symbol_raise_argument_error
     path = Sapp::Path.new("/:id/what_is_this")
     path.extract_keys_and_paths
