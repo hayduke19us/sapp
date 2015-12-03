@@ -3,6 +3,7 @@ require_relative 'response'
 require_relative 'handler'
 require_relative 'resources'
 require_relative 'route_map'
+require_relative 'path'
 
 require 'byebug'
 
@@ -22,7 +23,7 @@ module Sapp
       # then if the path object matches a saved route
       # extract the handler
       # Create handler object for calling the Proc
-      
+
       handler = Sapp::Handler.new request, routes
 
       # Check route exist, process response

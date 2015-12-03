@@ -12,6 +12,7 @@ module Sapp
     end
 
     # I need to extract the keys which is to say that each path has keys
+    # everything is determined by the keys
     def add verb, path, &handler
       routes[verb] ||= Hash.new
 
