@@ -1,4 +1,5 @@
 require_relative 'route_map'
+require_relative 'route_match'
 
 module Sapp
 
@@ -12,6 +13,19 @@ module Sapp
     def routes
       route_map.routes
     end
+
+    def matcher verb, path
+      @matcher ||= RouteMatch.new routes, verb, path
+    end
+
+    def route_exist? verb, path
+      matcher(verb, path).found?
+    end
+
+    def not_found!
+      [404, {}, ["Oops! No route for #{@match.verb} #{@match.path}"]]
+    end
+
 
     def add verb, path, &handler
       route_map.add verb, path, &handler

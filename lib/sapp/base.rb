@@ -18,11 +18,15 @@ module Sapp
       # Create request object
       request = Rack::Request.new env
 
+      # This is backwards a path object should be created
+      # then if the path object matches a saved route
+      # extract the handler
       # Create handler object for calling the Proc
+      
       handler = Sapp::Handler.new request, routes
 
       # Check route exist, process response
-      if route_map.exist? handler.verb, handler.path
+      if route_exist? handler.verb, handler.path
 
         unwrapped = handler.unwrap
 

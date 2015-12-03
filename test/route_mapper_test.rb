@@ -7,15 +7,6 @@ class RouteMapTest < Minitest::Test
     @map.add "GET", "/users", &@map.empty_proc
   end
 
-  def test_is_initialized_with_routes_as_empty_hash
-    assert @map.routes.empty?
-  end
-
-  focus
-  def test_not_found_returns_a_tuple
-    assert_equal 3, @map.not_found!.count
-  end
-
   def test_you_can_add_routes_to_the_routes_hash
     @map.add "GET", "/users/:id", &@map.empty_proc
     assert @map.routes["GET"]["/users/:id"]
@@ -31,4 +22,5 @@ class RouteMapTest < Minitest::Test
     @map.remove "GET", "/users"
     refute @map.routes["GET"]["/users"]
   end
+
 end

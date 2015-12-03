@@ -11,37 +11,21 @@ module Sapp
       @empty_proc ||= Proc.new { "Placeholder" }
     end
 
+    # I need to extract the keys which is to say that each path has keys
     def add verb, path, &handler
       routes[verb] ||= Hash.new
+
+      # extract keys here
+      # path = Path.new path
 
       if block_given?
         routes[verb][path] = handler
       else
         routes[verb][path] = empty_proc
       end
-
     end
 
-    def remove verb, path=nil
-      if path
-        routes[verb].delete path
-      else
-        routes.delete verb
-      end
-    end
-
-    def exist? verb, path
-      @verb = verb
-      @path = path
-
-      routes[verb] && routes[verb][path]
-    end
-
-    def not_found!
-      [404, {}, ["Oops! No route for #{@verb} #{@path}"]]
-    end
-
-    def parser path
+    def parse path
       hash = Hash.new
       x = 0
 
@@ -60,6 +44,17 @@ module Sapp
     end
 
 
-  end
+    def quick_parse path
+      path.split('/').last
+    end
 
+    def remove verb, path=nil
+      if path
+        routes[verb].delete path
+      else
+        routes.delete verb
+      end
+    end
+
+  end
 end
