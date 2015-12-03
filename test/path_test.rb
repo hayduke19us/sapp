@@ -36,6 +36,11 @@ class PathTest < Minitest::Test
     assert_equal ":ok", @path.keys[5]
   end
 
+  def test_parse_extracts_and_merges_keys_and_paths
+    assert_equal "users", @path.parse[0]
+    assert_equal ":id", @path.parse[1]
+  end
+
   def build_complex_path
     uri  = "/:id/users/get.something/really/:weird/:ok" 
     @path = Sapp::Path.new uri

@@ -38,7 +38,8 @@ module Sapp
     end
 
     def create_path
-      {keys: keys, paths: paths}
+      path = keys.merge(paths)
+      Hash[path.sort]
     end
 
 
