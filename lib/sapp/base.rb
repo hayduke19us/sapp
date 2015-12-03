@@ -16,6 +16,7 @@ module Sapp
     extend Resources
 
     def self.call env
+      byebug
       # Create request object
       request = Rack::Request.new env
 
@@ -37,7 +38,7 @@ module Sapp
 
       else
 
-        route_map.not_found!
+        not_found!
 
       end
     end

@@ -1,19 +1,22 @@
-
 require 'byebug'
+
 module Sapp
   class Path
 
-    attr_reader :original, :keys, :paths
+    attr_reader :original, :keys, :paths, :stream
 
     def initialize path
       @original = path
       @keys     = Hash.new
       @paths    = Hash.new
+      @stream   = Array.new
+      @controller = '/'
       @counter  = 0
     end
 
     def parse
       extract_keys_and_paths
+      set_controller
       create_path
     end
 
@@ -32,28 +35,27 @@ module Sapp
     end
 
     def extract_keys k
-      keys[counter] = k if k.match(/\A:/)
+      if k.match(/\A:/)
+        stream << 0
+        keys[counter] = k
+      end
     end
 
     def extract_paths p
-      paths[counter] = p unless p.match(/\A:/)
+      unless p.match(/\A:/)
+        stream << 1
+        paths[counter] = p
+      end
     end
 
     def create_path
-      byebug
-      begin
-
-        path   = keys.merge(paths)
-        sorted = Hash[path.sort]
-
-        if prefix_is_controller? sorted
-          sorted
-        else
-          raise ArgumentError, "A Path can't begin with a symbol"
-        end
-
-      end
-
+      {
+         controller: @controller,
+         stream: stream,
+         keys: keys,
+         methods: paths,
+         original: original
+      }
     end
 
     def counter
@@ -62,8 +64,13 @@ module Sapp
 
     private
 
-    def prefix_is_controller? path
-      path[0].match(/\A^:/) ? false : true
+    def set_controller 
+      if paths[0]
+        @controller = paths[0]
+        paths.delete 0
+      else
+        raise ArgumentError, "A Path can't begin with a symbol"
+      end
     end
 
     def count
@@ -74,6 +81,7 @@ module Sapp
       @counter = 0
     end
 
-
   end
 end
+
+

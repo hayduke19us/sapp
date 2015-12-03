@@ -23,7 +23,7 @@ module Sapp
     private
 
     def handler
-      routes[verb][path]
+      routes[verb][path][:handler]
     end
 
     def params

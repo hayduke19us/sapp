@@ -3,7 +3,7 @@ module Sapp
 
     def resources name
       add "GET", "/#{name}s"
-      add "GET", "/#{name}"
+      add "GET", "/#{name}/:id"
       add "POST", "/#{name}"
       add "PATCH", "/#{name}/:id"
       add "DELETE", "/#{name}/:id"
@@ -14,7 +14,7 @@ module Sapp
     end
 
     def show name, &block
-      add "GET", "/#{name}", &block
+      add "GET", "/#{name}/:id", &block
     end
 
     def update name, &block

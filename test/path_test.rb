@@ -37,16 +37,15 @@ class PathTest < Minitest::Test
   end
 
   def test_parse_extracts_and_merges_keys_and_paths
-    assert_equal "users", @path.parse[0]
-    assert_equal ":id", @path.parse[1]
+    path = @path.parse
+    assert_equal "users", path[:controller]
+    assert_equal ":id", path[:keys][1]
   end
 
-  focus
   def test_if_a_path_is_added_with_a_symbol_raise_argument_error
     path = Sapp::Path.new("/:id/what_is_this")
-    path.extract_keys_and_paths
     assert_raises ArgumentError do
-      path.create_path
+      path.parse
     end
   end
 

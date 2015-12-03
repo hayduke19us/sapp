@@ -23,7 +23,7 @@ module Sapp
     end
 
     def not_found!
-      [404, {}, ["Oops! No route for #{@match.verb} #{@match.path}"]]
+      [404, {}, ["Oops! No route for #{@matcher.verb} #{@matcher.path}"]]
     end
 
 

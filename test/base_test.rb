@@ -1,86 +1,14 @@
 require 'test_helper'
+require 'mocks/app.rb'
 require 'rack/test'
 require 'json'
-
-class SampleApp < Sapp::Base
-
-  get '/foo' do
-    [200, {}, ["Hello"]]
-  end
-
-  post '/foo' do
-    [200, {}, [params]]
-  end
-
-  patch '/bar' do
-    [200, {}, [params]]
-  end
-
-  get '/json' do
-    { name: 'pete', height: 6.1, hair: 'black' }
-  end
-
-  get '/status' do
-    set_status params["status"]
-    "the status should be set to #{params}"
-  end
-
-  get '/foo/:id' do 
-    "This should return a user"
-  end
-
-end
-
-class SampleApp2 < Sapp::Base
-
-  get '/foo' do
-    [200, {}, ["Hello"]]
-  end
-
-  post '/foo' do
-    [200, {}, [params]]
-  end
-
-end
-
-class SampleApp3 < Sapp::Base
-
-  resources "user"
-
-end
-
-class SampleApp4 < Sapp::Base
-
-  index "users" do
-    "All Users"
-  end
-
-  show "user" do
-    "One User"
-  end
-
-end
-
-class SampleApp5 < Sapp::Base
-
-  resources "user"
-
-  index "users" do
-    "All Users"
-  end
-
-  show "user" do
-    "One User"
-  end
-
-end
 
 
 class BaseTest < Minitest::Test
   include Rack::Test::Methods
 
   def app
-    @app || SampleApp
+    @app || Mocks::App
   end
 
   def test_GET
@@ -103,11 +31,6 @@ class BaseTest < Minitest::Test
     assert_equal 3, app.routes.count
   end
 
-  def test_that_routes_can_change
-    @app = SampleApp2
-    assert_equal 2, app.routes.count
-  end
-
   def test_if_the_response_body_is_a_hash_change_to_json_for_client
     get '/json'
     assert JSON.parse(last_response.body)
@@ -124,19 +47,20 @@ class BaseTest < Minitest::Test
   end
 
   def test_can_define_routes_with_resources
-    @app = SampleApp3
+    @app = Mocks::Resources
     get '/users'
     assert_equal "Placeholder", last_response.body
   end
 
   def test_can_define_routes_with_CRUD_methods_and_block
-    @app = SampleApp4
+    @app = Mocks::Crud
     get '/users'
     assert_equal "All Users" , last_response.body
   end
 
+  focus
   def test_using_CRUD_methods_overrides_the_handler
-    @app = SampleApp5
+    @app = Mocks::ResourcesAndCrud
     get '/users'
     assert_equal "All Users" , last_response.body
   end

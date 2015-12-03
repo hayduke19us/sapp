@@ -1,3 +1,5 @@
+require_relative 'path'
+
 module Sapp
   class RouteMap
 
@@ -11,42 +13,74 @@ module Sapp
       @empty_proc ||= Proc.new { "Placeholder" }
     end
 
-    # I need to extract the keys which is to say that each path has keys
-    # everything is determined by the keys
     def add verb, path, &handler
-      routes[verb] ||= Hash.new
+      path_hash = Sapp::Path.new(path).parse
 
-      # extract keys here
-      # path = Path.new path
+      verbs = get_or_create_verb verb
+      controller = get_or_create_controller path_hash, verbs
 
-      if block_given?
-        routes[verb][path] = handler
+      if path_exist? controller, path_hash[:original]
+        update_path controller, path_hash, handler
       else
-        routes[verb][path] = empty_proc
+        create_set controller, path_hash, &handler
       end
-    end
-
-    def parse path
-      hash = Hash.new
-      x = 0
-
-      s = path.split('/')
-      s.delete ""
-
-      s.each do |p|
-
-        hash[x] = p
-        x += 1
-
-      end
-
-      hash
 
     end
 
+    def update_path controller, path_hash, handler
+      controller[:paths].map do |path|
+        if path[:original] == path_hash[:original]
+          path = add_handler(path_hash, handler)
+        end
+      end
+    end
 
-    def quick_parse path
-      path.split('/').last
+    def path_exist? controller, path
+      controller.any? && controller[:index].include?(path)
+    end
+
+    def create_set controller, path_hash, &handler
+      get_or_create_paths controller
+      get_or_create_index controller
+      add_path path_hash, controller, &handler
+      add_path_to_index controller, path_hash[:original]
+    end
+
+    def add_path_to_index controller, path
+      controller[:index] << path
+    end
+
+    def get_or_create_verb verb
+      routes[verb] ||= Hash.new
+    end
+
+    def get_or_create_controller path_hash, verbs
+      controller = path_hash[:controller]
+      verbs[controller] ||= Hash.new
+    end
+
+    def get_or_create_paths controller
+      controller[:paths] ||= Array.new
+    end
+
+    def get_or_create_index controller
+      controller[:index] ||= Array.new
+    end
+
+    def add_stream path_hash, controller
+      controller[:streams] << path_hash[:stream]
+    end
+
+    def add_path path_hash, controller, &handler
+      if block_given?
+        controller[:paths] <<  add_handler(path_hash, handler)
+      else
+        controller[:paths] <<  add_handler(path_hash, empty_proc)
+      end
+    end
+
+    def add_handler path_hash, handler
+      path_hash.merge handler: handler
     end
 
     def remove verb, path=nil
