@@ -21,8 +21,8 @@ module Sapp
       request = Rack::Request.new env
 
       request_path = Sapp::Path::Request.new request.path, request.request_method, routes
-      request_path.parse
 
+      request_path.parse
       if request_path.path?
         handler = Sapp::Handler.new request_path.handler, request
         unwrapped = handler.unwrap
@@ -33,7 +33,7 @@ module Sapp
 
       else
 
-        not_found!
+        not_found! request_path.verb, request_path.original 
 
       end
     end

@@ -22,8 +22,8 @@ module Sapp
       matcher(verb, path).found?
     end
 
-    def not_found!
-      [404, {}, ["Oops! No route for #{@matcher.verb} #{@matcher.path}"]]
+    def not_found! verb, path
+      [404, {}, ["Oops! No route for #{verb} #{path}"]]
     end
 
 
