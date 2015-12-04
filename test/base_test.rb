@@ -73,7 +73,17 @@ class BaseTest < Minitest::Test
   def test_a_very_complex_path_is_found
     @app = Mocks::ComplexRoute
     get '/user/2/posts/4/2015/10/words/frank'
+
+    expected_params =  {
+      'id' => '2',
+      'post_id' => '4',
+      'date' => '2015',
+      'limit' => '10',
+      'start' => 'frank'
+    }
+
     assert_equal 200, last_response.status
+    assert_equal expected_params, JSON.parse(last_response.body)
   end
 
 end
