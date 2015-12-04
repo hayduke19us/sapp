@@ -56,11 +56,13 @@ module Sapp
         @sort_path ||= Hash[array]
       end
 
+      # Remove the first key:value(controller) return a hash with keys from path
       def extract_keys
         hash = Hash.new
+        sort_path.delete 0
 
         sort_path.each do |k, v|
-          hash[extract_key(k)] = v if k > 0 
+          hash[extract_key(k)] = v
         end
 
         hash
