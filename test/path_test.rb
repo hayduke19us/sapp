@@ -64,17 +64,23 @@ class PathRequestTest < Minitest::Test
     new_proc = Proc.new {"Hey hey"}
     @map = Sapp::RouteMap.new
     @map.add "GET", "/users/:id", &new_proc
-    @path = Sapp::Path::Request.new("/users/2", "GET", @map.routes)
+    @path = Sapp::Path::Request.new("/users/3", "GET", @map.routes)
   end
 
   def test_create_stream_creates_a_numerically_keyed_hash_for_path
     assert_equal "users",  @path.create_hash[0]
   end
 
-  focus
   def test_parse_sets_controller
     @path.parse
     assert_equal 'users', @path.controller
+  end
+
+  focus
+  def test_find_controller_returns_the_routes_for_that_countroller
+    @path.parse
+    assert_equal Proc, @path.handler.class
+    assert_equal '3', @path.keys[:id]
   end
 
 end
