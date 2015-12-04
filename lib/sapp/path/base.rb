@@ -1,7 +1,7 @@
 module Sapp
   module Path
     class Base
-      attr_reader :original, :keys, :paths, :stream
+      attr_reader :original, :keys, :paths, :stream, :controller
 
       def initialize path
         @original = path

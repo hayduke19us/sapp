@@ -61,11 +61,20 @@ end
 
 class PathRequestTest < Minitest::Test
   def setup
-    @path = Sapp::Path::Request.new("/users/2")
+    new_proc = Proc.new {"Hey hey"}
+    @map = Sapp::RouteMap.new
+    @map.add "GET", "/users/:id", &new_proc
+    @path = Sapp::Path::Request.new("/users/2", "GET", @map.routes)
+  end
+
+  def test_create_stream_creates_a_numerically_keyed_hash_for_path
+    assert_equal "users",  @path.create_hash[0]
   end
 
   focus
-  def test_sanity
-    assert @path
+  def test_parse_sets_controller
+    @path.parse
+    assert_equal 'users', @path.controller
   end
+
 end
