@@ -18,6 +18,7 @@ module Sapp
       # Sets controller, path keys and handler
       def parse
         set_controller
+
         if path?
           @path  = find_path.uniq.first
           @keys  = extract_keys
