@@ -17,7 +17,7 @@ module Sapp
     # All RESTful verb methods in Sapp::Routes
     extend Routes
 
-    # Support for Rails like resources with corresponding views
+    # Support for Rails like resources with and CRUD methods
     extend Resources
 
     def self.call env

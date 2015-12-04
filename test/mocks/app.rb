@@ -67,4 +67,9 @@ module Mocks
       params
     end
   end
+
+  class AliasRoute < Sapp::Base
+    add 'GET', '/users/this_is_add'
+    route 'POST', '/users/this_is_route'
+  end
 end

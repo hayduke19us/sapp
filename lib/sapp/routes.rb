@@ -6,6 +6,7 @@ module Sapp
   # Use exclusively as a mixin for Base
   module Routes
 
+
     def route_map
       @route_map ||= RouteMap.new
     end
@@ -30,6 +31,8 @@ module Sapp
     def add verb, path, &handler
       route_map.add verb, path, &handler
     end
+
+    alias_method :route, :add
 
     def get path, &handler
       add "GET", path, &handler
