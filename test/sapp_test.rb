@@ -26,7 +26,7 @@ class SappTest < Minitest::Test
       'Hello Mr. Foo'
     end
 
-    handler = @klass.routes['GET']['/foo']
+    handler = @klass.routes['GET']['foo'][:paths].first[:handler]
     assert handler
     assert_equal "Hello Mr. Foo", handler.call, "Handler should be  a Proc"
   end

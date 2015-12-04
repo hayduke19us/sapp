@@ -24,7 +24,7 @@ module Sapp
       request_path.parse
 
       if request_path.path?
-        handler = Sapp::Handler.new request_path.handler
+        handler = Sapp::Handler.new request_path.handler, request
         unwrapped = handler.unwrap
 
         response  = Sapp::Response.new handler.status, unwrapped

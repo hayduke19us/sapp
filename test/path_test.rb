@@ -43,7 +43,7 @@ class PathTest < Minitest::Test
   end
 
   def test_if_a_path_is_added_with_a_symbol_raise_argument_error
-    path = Sapp::Path.new("/:id/what_is_this")
+    path = Sapp::Path::Base.new("/:id/what_is_this")
     assert_raises ArgumentError do
       path.parse
     end
@@ -53,7 +53,7 @@ class PathTest < Minitest::Test
 
   def build_complex_path
     uri  = "/:id/users/get.something/really/:weird/:ok" 
-    @path = Sapp::Path.new uri
+    @path = Sapp::Path::Base.new uri
     @path.extract_keys_and_paths
   end
 
