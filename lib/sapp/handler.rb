@@ -6,9 +6,10 @@ module Sapp
   # We need access to #params and #status
   class Handler
 
-    def initialize handler, request
+    def initialize handler, request, keys
       @handler = handler
       @request = request
+      @keys = keys
     end
 
     def unwrap

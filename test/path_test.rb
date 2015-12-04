@@ -82,4 +82,7 @@ class PathRequestTest < Minitest::Test
     assert_equal '3', @path.keys[:id]
   end
 
+  def test_no_path_is_found
+  end
+
 end
