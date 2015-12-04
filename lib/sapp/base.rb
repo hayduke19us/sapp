@@ -3,7 +3,8 @@ require_relative 'response'
 require_relative 'handler'
 require_relative 'resources'
 require_relative 'route_map'
-require_relative 'path'
+
+require File.expand_path('../', __FILE__) + '/path/request'
 
 require 'byebug'
 
@@ -20,12 +21,12 @@ module Sapp
       # Create request object
       request = Rack::Request.new env
 
+      request_path = Sapp::Path::Request.new request.path, request.request_method, routes
+
       # This is backwards a path object should be created
       # then if the path object matches a saved route
       # extract the handler
       # Create handler object for calling the Proc
-
-      handler = Sapp::Handler.new request, routes
 
       # Check route exist, process response
       if route_exist? handler.verb, handler.path

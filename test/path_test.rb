@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PathTest < Minitest::Test
   def setup
-    @path = Sapp::Path.new("/users/:id")
+    @path = Sapp::Path::Base.new("/users/:id")
   end
 
   def test_sanity
@@ -57,4 +57,15 @@ class PathTest < Minitest::Test
     @path.extract_keys_and_paths
   end
 
+end
+
+class PathRequestTest < Minitest::Test
+  def setup
+    @path = Sapp::Path::Request.new("/users/2")
+  end
+
+  focus
+  def test_sanity
+    assert @path
+  end
 end

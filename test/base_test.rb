@@ -58,7 +58,6 @@ class BaseTest < Minitest::Test
     assert_equal "All Users" , last_response.body
   end
 
-  focus
   def test_using_CRUD_methods_overrides_the_handler
     @app = Mocks::ResourcesAndCrud
     get '/users'

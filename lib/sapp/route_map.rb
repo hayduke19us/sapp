@@ -1,4 +1,4 @@
-require_relative 'path'
+require File.expand_path('../', __FILE__) + '/path/base'
 
 module Sapp
   class RouteMap
@@ -14,7 +14,7 @@ module Sapp
     end
 
     def add verb, path, &handler
-      path_hash = Sapp::Path.new(path).parse
+      path_hash = Sapp::Path::Base.new(path).parse
 
       verbs = get_or_create_verb verb
       controller = get_or_create_controller path_hash, verbs
