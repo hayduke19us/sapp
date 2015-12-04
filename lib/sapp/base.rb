@@ -2,7 +2,6 @@ require_relative 'routes'
 require_relative 'response'
 require_relative 'handler'
 require_relative 'resources'
-require_relative 'route_map'
 
 require File.expand_path('../', __FILE__) + '/path/request'
 
