@@ -16,11 +16,10 @@ module Sapp
 
       # Sets controller, path keys and handler
       def parse
-        byebug
         set_controller
 
         @path  = find_path.uniq.first
-        @keys  = extract_keys(@path, sort_path)
+        @keys  = extract_keys 
         @handler = @path[:handler]
       end
 
@@ -57,17 +56,19 @@ module Sapp
         @sort_path ||= Hash[array]
       end
 
-      def extract_keys path, hash
-        h = Hash.new
+      def extract_keys
+        hash = Hash.new
 
-        hash.each do |k, v|
-          if k > 0 
-            key = path[:keys][k]
-            h[eval key] = v
-          end
+        sort_path.each do |k, v|
+          hash[extract_key(k)] = v if k > 0 
         end
 
-        h
+        hash
+      end
+
+      def extract_key k
+        key = path[:keys][k]
+        eval key
       end
 
       def find_controller
