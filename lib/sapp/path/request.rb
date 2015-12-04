@@ -16,11 +16,13 @@ module Sapp
 
       # Sets controller, path keys and handler
       def parse
-        set_controller
+        begin
+          set_controller
 
-        @path  = find_path.uniq.first
-        @keys  = extract_keys
-        @handler = @path[:handler]
+          @path  = find_path.uniq.first
+          @keys  = extract_keys
+          @handler = @path[:handler]
+        end
       end
 
       # Returns hash of matched paths by stream count

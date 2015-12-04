@@ -17,24 +17,19 @@ module Sapp
     extend Resources
 
     def self.call env
-      # Create request object
-      request = Rack::Request.new env
-
-      request_path = Sapp::Path::Request.new request.path, request.request_method, routes
-
+      req = Rack::Request.new env
+      request_path = Sapp::Path::Request.new req.path, req.request_method, routes
       request_path.parse
+
       if request_path.path?
-        handler = Sapp::Handler.new request_path.handler, request
+        handler = Sapp::Handler.new request_path.handler, req
         unwrapped = handler.unwrap
 
         response  = Sapp::Response.new handler.status, unwrapped
 
         response.process_handler
-
       else
-
         not_found! request_path.verb, request_path.original 
-
       end
     end
 
