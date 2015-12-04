@@ -6,15 +6,30 @@ module Sapp
     attr_accessor :routes
 
     def initialize
-      @routes = Hash.new
+      @routes    = Hash.new
+    end
+
+    def namespaces
+      @namespaces
+    end
+
+    def set_namespace names
+      @namespaces = names
     end
 
     def empty_proc
       @empty_proc ||= Proc.new { "Placeholder" }
     end
 
+    def update_options
+      options = Hash.new
+      options[:namespaces] = namespaces if namespaces
+      options
+    end
+
     def add verb, path, &handler
-      path_hash = Sapp::Path::Base.new(path).parse
+      options = update_options
+      path_hash = Sapp::Path::Base.new(path, options: options ).parse
 
       verbs = get_or_create_verb verb
       controller = get_or_create_controller path_hash, verbs

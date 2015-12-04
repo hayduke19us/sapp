@@ -16,6 +16,7 @@ module Sapp
 
       # Sets controller, path keys and handler
       def parse
+        byebug
         set_controller
 
         if path?
@@ -37,11 +38,7 @@ module Sapp
 
       # Matches by method names and stream count, returns best match
       def find_path
-        if match_by_methods_and_stream.empty?
-          match_by_stream_count
-        else
-          match_by_methods_and_stream
-        end
+        match_by_methods_and_stream
       end
 
       # Return paths from request controller
@@ -68,7 +65,7 @@ module Sapp
 
         sort_path.each do |k, v|
           if path[:keys].include?(k) && k > 0
-            hash[extract_key(k)] = v 
+            hash[extract_key(k)] = v
           end
         end
 
@@ -93,7 +90,7 @@ module Sapp
       end
 
       def check_methods? p, hash
-        (p[:methods].values - hash.values).any?
+        (p[:methods].values - hash.values).empty?
       end
 
       # Sets the controller based off the first key:value pair

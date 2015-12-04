@@ -1,27 +1,49 @@
+require 'byebug'
+
 module Sapp
   module Path
     class Base
-      attr_reader :original, :keys, :paths, :stream, :controller
+      attr_reader :original, :keys, :paths, :stream, :controller, :options
 
-      def initialize path
-        @original = path
-        @keys     = Hash.new
-        @paths    = Hash.new
-        @stream   = Array.new
+      def initialize path, options: {}
+        @original   = path
+        @options    = options
+        @keys       = Hash.new
+        @paths      = Hash.new
+        @stream     = Array.new
         @controller = '/'
-        @counter  = 0
+        @counter    = 0
       end
 
       def parse
         extract_keys_and_paths
         set_controller
-        create_path
+        path = create_path
+
+        options? ? path.merge(options) : path
+      end
+
+      def options?
+        options.any?
+      end
+
+      def namespaces?
+        options && options[:namespaces] && options[:namespaces].any?
+      end
+
+      def namespaces
+        options[:namespaces]
       end
 
       def setup_extraction
-        x = original.split('/')
-        x.delete("")
-        x
+        path = original.split('/')
+        path.delete("")
+
+        if namespaces?
+          namespaces | path
+        else
+          path
+        end
       end
 
       def extract_keys_and_paths
@@ -52,7 +74,7 @@ module Sapp
            stream: stream,
            keys: keys,
            methods: paths,
-           original: original
+           original: original,
         }
       end
 
@@ -62,7 +84,7 @@ module Sapp
 
       private
 
-      def set_controller 
+      def set_controller
         if paths[0]
           @controller = paths[0]
           paths.delete 0

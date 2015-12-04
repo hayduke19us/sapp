@@ -88,7 +88,13 @@ class BaseTest < Minitest::Test
 
   def test_add_alias_route
     @app = Mocks::AliasRoute
-    get '/users/this_is_route'
+    get '/users/this_is_add'
+    assert_equal 200, last_response.status
+  end
+
+  def test_namespaces_are_cascading
+    @app = Mocks::Namespace
+    get '/users/posts/2'
     assert_equal 200, last_response.status
   end
 

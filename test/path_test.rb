@@ -49,6 +49,13 @@ class PathTest < Minitest::Test
     end
   end
 
+  def test_if_namespaces_options_is_given_it_is_added_to_path_hash
+    options = {options: { namespaces: ["users"] }}
+
+    path = Sapp::Path::Base.new("/namespace", options)
+    assert_equal 'users', path.parse[:namespaces].first
+  end
+
   private
 
   def build_complex_path

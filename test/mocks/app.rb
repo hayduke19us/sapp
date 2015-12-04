@@ -72,4 +72,12 @@ module Mocks
     add 'GET', '/users/this_is_add'
     route 'POST', '/users/this_is_route'
   end
+
+  class Namespace < Sapp::Base
+    namespace 'users', 'posts'
+
+    add 'GET', '/:id' do
+      "Returns all a users posts"
+    end
+  end
 end

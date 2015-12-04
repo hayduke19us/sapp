@@ -10,6 +10,10 @@ module Sapp
       @route_map ||= RouteMap.new
     end
 
+    def namespace *names
+      route_map.set_namespace names
+    end
+
     def routes
       route_map.routes
     end
