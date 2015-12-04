@@ -83,6 +83,9 @@ class PathRequestTest < Minitest::Test
   end
 
   def test_no_path_is_found
+    path = Sapp::Path::Request.new("/not_found/3", "GET", @map.routes)
+    path.parse
+    refute path.path?
   end
 
 end

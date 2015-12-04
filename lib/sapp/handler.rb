@@ -9,10 +9,11 @@ module Sapp
     def initialize handler, request, keys
       @handler = handler
       @request = request
-      @keys = keys
+      @keys    = keys
     end
 
     def unwrap
+      add_keys_to_params
       instance_eval(&handler)
     end
 
@@ -21,6 +22,10 @@ module Sapp
     end
 
     private
+
+    def add_keys_to_params
+      params.merge! keys
+    end
 
     def params
       @request.params
@@ -32,6 +37,10 @@ module Sapp
 
     def handler
       @handler 
+    end
+
+    def keys
+      @keys
     end
 
   end

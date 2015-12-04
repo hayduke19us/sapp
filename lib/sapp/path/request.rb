@@ -1,4 +1,5 @@
 require_relative 'base'
+require 'byebug'
 
 module Sapp
   module Path
@@ -17,9 +18,11 @@ module Sapp
       # Sets controller, path keys and handler
       def parse
         set_controller
-        @path  = find_path.uniq.first
-        @keys  = extract_keys
-        @handler = @path[:handler]
+        if find_controller
+          @path  = find_path.uniq.first
+          @keys  = extract_keys
+          @handler = @path[:handler]
+        end
       end
 
       # Returns hash of matched paths by stream count
@@ -95,7 +98,7 @@ module Sapp
 
       # Returns boolean, is handler defined?
       def path?
-        find_path.any?
+        find_controller && find_path.any?
       end
 
     end
