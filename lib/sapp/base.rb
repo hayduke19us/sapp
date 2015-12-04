@@ -17,20 +17,14 @@ module Sapp
     extend Resources
 
     def self.call env
-      byebug
       # Create request object
       request = Rack::Request.new env
 
       request_path = Sapp::Path::Request.new request.path, request.request_method, routes
+      request_path.parse
 
-      # This is backwards a path object should be created
-      # then if the path object matches a saved route
-      # extract the handler
-      # Create handler object for calling the Proc
-
-      # Check route exist, process response
-      if route_exist? handler.verb, handler.path
-
+      if request_path.path?
+        handler = Sapp::Handler.new request_path.handler
         unwrapped = handler.unwrap
 
         response  = Sapp::Response.new handler.status, unwrapped

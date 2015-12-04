@@ -39,7 +39,6 @@ module Sapp
       end
 
       def extract_keys path, hash
-        byebug
         h = Hash.new
 
         hash.each do |k, v|
@@ -79,6 +78,10 @@ module Sapp
 
       def set_controller v
         @controller = v
+      end
+
+      def path?
+        @handler ? true : false
       end
 
     end

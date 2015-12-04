@@ -6,25 +6,19 @@ module Sapp
   # We need access to #params and #status
   class Handler
 
-    attr_reader :verb, :path, :status, :routes
-
-    def initialize request, routes
-      @request = request
-      @routes  = routes
-      @verb    = @request.request_method
-      @path    = @request.path
-      @status  = nil
+    def initialize handler
+      @handler = handler
     end
 
     def unwrap
       instance_eval(&handler)
     end
 
-    private
-
-    def handler
-      routes[verb][path][:handler]
+    def status
+      @status
     end
+
+    private
 
     def params
       @request.params
@@ -33,5 +27,10 @@ module Sapp
     def set_status code
       @status = code
     end
+
+    def handler
+      @handler 
+    end
+
   end
 end

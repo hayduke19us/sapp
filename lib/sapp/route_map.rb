@@ -28,11 +28,12 @@ module Sapp
     end
 
     def update_path controller, path_hash, handler
-      controller[:paths].map do |path|
+      map = controller[:paths].collect do |path|
         if path[:original] == path_hash[:original]
-          path = add_handler(path_hash, handler)
+          add_handler(path_hash, handler)
         end
       end
+      controller[:paths] = map
     end
 
     def path_exist? controller, path

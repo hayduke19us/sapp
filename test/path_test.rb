@@ -61,9 +61,9 @@ end
 
 class PathRequestTest < Minitest::Test
   def setup
-    new_proc = Proc.new {"Hey hey"}
+    @new_proc = Proc.new {"Hey hey"}
     @map = Sapp::RouteMap.new
-    @map.add "GET", "/users/:id", &new_proc
+    @map.add "GET", "/users/:id", &@new_proc
     @path = Sapp::Path::Request.new("/users/3", "GET", @map.routes)
   end
 
@@ -76,7 +76,6 @@ class PathRequestTest < Minitest::Test
     assert_equal 'users', @path.controller
   end
 
-  focus
   def test_find_controller_returns_the_routes_for_that_countroller
     @path.parse
     assert_equal Proc, @path.handler.class
