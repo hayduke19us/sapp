@@ -21,6 +21,7 @@ module Sapp
     extend Resources
 
     def self.call env
+      byebug
       req = Rack::Request.new env
       req_path = Sapp::Path::Request.new req.path, req.request_method, routes
       req_path.parse

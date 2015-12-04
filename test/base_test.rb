@@ -64,4 +64,11 @@ class BaseTest < Minitest::Test
     assert_equal "All Users" , last_response.body
   end
 
+  focus
+  def test_if_a_request_path_is_not_found_a_404_is_returned
+    @app = Mocks::Crud
+    get '/users/:id/what'
+    assert_equal 404, last_response.status
+  end
+
 end
