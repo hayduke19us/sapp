@@ -59,4 +59,12 @@ module Mocks
     end
 
   end
+
+  class ComplexRoute < Sapp::Base
+    resources "user"
+
+    get '/user/:id/posts/:post_id/:date/:limit/words/:start' do
+      params
+    end
+  end
 end

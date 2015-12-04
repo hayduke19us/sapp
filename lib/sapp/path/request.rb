@@ -68,16 +68,21 @@ module Sapp
         hash = Hash.new
 
         sort_path.each do |k, v|
-          hash[extract_key(k)] = v if k > 0 
+          if path[:keys].include?(k) && k > 0
+            hash[extract_key(k)] = v 
+          end
         end
 
         hash
       end
 
-      # eval the key declaring it a symbol
-      def extract_key k
+      def key? k
+        k > 0
+      end
+
+      def extract_key k 
         key = path[:keys][k]
-        eval key
+        key.tr(':', '').to_sym
       end
 
       def find_controller
