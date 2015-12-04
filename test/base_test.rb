@@ -70,7 +70,6 @@ class BaseTest < Minitest::Test
     assert_equal 404, last_response.status
   end
 
-  focus
   def test_a_very_complex_path_is_found
     @app = Mocks::ComplexRoute
     get '/user/2/posts/4/2015/10/words/frank'

@@ -1,5 +1,4 @@
 require_relative 'base'
-require 'byebug'
 
 module Sapp
   module Path
@@ -80,7 +79,7 @@ module Sapp
         k > 0
       end
 
-      def extract_key k 
+      def extract_key k
         key = path[:keys][k]
         key.tr(':', '').to_sym
       end
