@@ -68,7 +68,7 @@ class PathRequestTest < Minitest::Test
   end
 
   def test_create_stream_creates_a_numerically_keyed_hash_for_path
-    assert_equal "users",  @path.create_hash[0]
+    assert_equal "users",  @path.sort_path[0]
   end
 
   def test_parse_sets_controller

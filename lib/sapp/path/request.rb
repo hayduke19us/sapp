@@ -4,7 +4,7 @@ module Sapp
   module Path
     class Request < Base
 
-      attr_reader :routes, :verb, :keys, :handler
+      attr_reader :routes, :verb, :handler, :keys, :path
 
       def initialize original, verb, routes
         super(original)
@@ -14,28 +14,47 @@ module Sapp
         @handler = nil
       end
 
+      # Sets controller, path keys and handler
       def parse
-        hash = create_hash
-        set_controller hash[0]
-        paths = find_controller[:paths]
-        boom = []
+        byebug
+        set_controller
 
-        paths.each do |p|
-          if check_stream? p, hash
-            boom << p
-          end
+        @path  = find_path.uniq.first
+        @keys  = extract_keys(@path, sort_path)
+        @handler = @path[:handler]
+      end
+
+      def match_by_stream_count
+        paths.select { |p| check_stream? p, sort_path }
+      end
+
+      def match_by_methods_and_stream
+        match_by_stream_count.select { |p| check_methods? p, sort_path }
+      end
+
+      # Matches by method names and stream count, returns best match
+      def find_path
+        if match_by_methods_and_stream.empty?
+          match_by_stream_count
+        else
+          match_by_methods_and_stream
+        end
+      end
+
+      def paths
+        find_controller[:paths]
+      end
+
+      # Parses path by '/' and creates a numbered dictionary EX: { 0 => 'user' }
+      def sort_path
+        array = Array.new
+
+        setup_extraction.each do |v|
+          array << [counter, v]
+          count
         end
 
-        boom.each do |b|
-          if check_methods? b, hash
-            boom << b
-          end
-        end
-
-        path = boom.uniq.first
-
-        @keys = extract_keys path, hash
-        @handler = path[:handler]
+        @sort_path ||= Hash[array]
       end
 
       def extract_keys path, hash
@@ -43,7 +62,7 @@ module Sapp
 
         hash.each do |k, v|
           if k > 0 
-            key = path[:keys][k] 
+            key = path[:keys][k]
             h[eval key] = v
           end
         end
@@ -51,17 +70,8 @@ module Sapp
         h
       end
 
-      def find_controller 
+      def find_controller
         routes[verb][controller]
-      end
-
-      def create_hash
-        hash = Hash.new
-        setup_extraction.each do |v|
-          hash[counter] = v
-          count
-        end
-        hash
       end
 
       def check_all? p, hash
@@ -76,8 +86,9 @@ module Sapp
         (p[:methods].values - hash.values).any?
       end
 
-      def set_controller v
-        @controller = v
+      # Sets the controller based off the first key:value pair
+      def set_controller 
+        @controller = sort_path[0]
       end
 
       def path?
