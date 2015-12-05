@@ -1,4 +1,6 @@
 module Sapp
+  # A mixin for Sapp::Base. Provides Rails like resource
+  # methods for creating routes
   module Resources
 
     def resources name

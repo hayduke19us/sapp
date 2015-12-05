@@ -1,5 +1,7 @@
 module Sapp
   module Path
+    # An Object that builds a path structure for matching. Is used during
+    # the addition of routes. 
     class Base
       attr_reader :original, :keys, :paths, :stream, :controller, :options
 
@@ -9,7 +11,6 @@ module Sapp
         @keys       = Hash.new
         @paths      = Hash.new
         @stream     = Array.new
-        @controller = '/'
         @counter    = 0
       end
 
@@ -22,19 +23,25 @@ module Sapp
       end
 
       def set_original options, path
+        namespaces = options[:namespaces]
+
         begin
-          if options[:namespaces] && options[:namespaces].count > 2
+          if nested_deeply? namespaces 
             raise ArgumentError, "Routes nested too deeply"
           else
-            concat_namespace_and_path path, options[:namespaces]
+            concat_namespace_and_path path, namespaces
           end
         end
       end
 
+      def nested_deeply? namespaces
+        namespaces? namespaces && namespaces.count > 2
+      end
+
       def concat_namespace_and_path path, namespaces
-        if namespaces && namespaces.any?
+        if namespaces? namespaces
           x = namespace_to_path namespaces[0]
-          y = namespaces[1] ? namespace_to_path(namespaces[1]) : ""
+          y = nested?(namespaces) ? namespace_to_path(namespaces[1]) : ""
 
           x + path + y
         else
@@ -50,8 +57,12 @@ module Sapp
         options.any?
       end
 
-      def namespaces?
-        options && options[:namespaces] && options[:namespaces].any?
+      def nested? namespaces
+        namespaces[1]
+      end
+
+      def namespaces? namespaces
+        namespaces && namespaces.any?
       end
 
       def namespaces
@@ -72,17 +83,17 @@ module Sapp
         end
       end
 
-      def extract_keys k
-        if k.match(/\A:/)
+      def extract_keys key
+        if key.match(/\A:/)
           stream << 0
-          keys[counter] = k
+          keys[counter] = key
         end
       end
 
-      def extract_paths p
-        unless p.match(/\A:/)
+      def extract_paths path
+        unless path.match(/\A:/)
           stream << 1
-          paths[counter] = p
+          paths[counter] = path
         end
       end
 
@@ -103,8 +114,7 @@ module Sapp
       private
 
       def set_controller
-        if paths[0]
-          @controller = paths[0]
+        if @controller = paths[0]
           paths.delete 0
         else
           raise ArgumentError, "A Path can't begin with a symbol"

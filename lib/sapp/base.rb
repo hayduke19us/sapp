@@ -7,13 +7,12 @@ require 'json'
 
 require File.expand_path('../', __FILE__) + '/path/request'
 
-# Order of routing operations.
-# 1. Create Request.
-# 2. Parse request path.
-# 3. If path found unwrap handler in context of params and status.
-# 4. If path not found return a 404.
-
 module Sapp
+  # Order of routing operations.
+  # 1. Create Request.
+  # 2. Parse request path.
+  # 3. If path found unwrap handler in context of params and status.
+  # 4. If path not found return a 404.
   class Base
     # All RESTful verb methods in Sapp::Routes
     extend Routes
