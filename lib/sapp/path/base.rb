@@ -6,7 +6,7 @@ module Sapp
       attr_reader :original, :keys, :paths, :stream, :controller, :options
 
       def initialize path, options: {}
-        @original   = path
+        @original   = set_original options, path
         @options    = options
         @keys       = Hash.new
         @paths      = Hash.new
@@ -21,6 +21,22 @@ module Sapp
         path = create_path
 
         options? ? path.merge(options) : path
+      end
+
+      def set_original options, path
+        namespaces = options[:namespaces]
+        if options.any? && namespaces.any?
+          x = namespace_to_path namespaces[0]
+          y = namespaces[1] ? namespace_to_path(namespaces[1]) : ""
+
+          x + path + y
+        else
+          path
+        end
+      end
+
+      def namespace_to_path namespaces
+        '/' + namespaces.join('/') 
       end
 
       def options?
@@ -38,12 +54,7 @@ module Sapp
       def setup_extraction
         path = original.split('/')
         path.delete("")
-
-        if namespaces?
-          namespaces | path
-        else
-          path
-        end
+        path
       end
 
       def extract_keys_and_paths

@@ -16,7 +16,6 @@ module Sapp
 
       # Sets controller, path keys and handler
       def parse
-        byebug
         set_controller
 
         if path?

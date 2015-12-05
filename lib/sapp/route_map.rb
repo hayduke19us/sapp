@@ -6,29 +6,33 @@ module Sapp
     attr_accessor :routes
 
     def initialize
-      @routes    = Hash.new
+      @routes = Hash.new
     end
 
     def namespaces
-      @namespaces
+      @namespaces ||= Array.new
     end
 
-    def set_namespace names
-      @namespaces = names
+    def set_namespace names, nest
+      byebug
+      if nest && namespaces.any?
+        @namespaces = namespaces << names
+      else
+        @namespaces = [names]
+      end
     end
 
     def empty_proc
       @empty_proc ||= Proc.new { "Placeholder" }
     end
 
-    def update_options
+    def options
       options = Hash.new
       options[:namespaces] = namespaces if namespaces
       options
     end
 
     def add verb, path, &handler
-      options = update_options
       path_hash = Sapp::Path::Base.new(path, options: options ).parse
 
       verbs = get_or_create_verb verb

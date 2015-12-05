@@ -75,9 +75,19 @@ module Mocks
 
   class Namespace < Sapp::Base
     namespace 'users', 'posts'
-
-    add 'GET', '/:id' do
+    get '/:id' do
       "Returns all a users posts"
     end
+
+    namespace 'posts', 'users'
+    get '/:id' do
+      "Returns all posts users"
+    end
+
+    namespace 'friends', nest: true
+    get '/:id' do
+      "Returns a posts user's friend"
+    end
+
   end
 end
