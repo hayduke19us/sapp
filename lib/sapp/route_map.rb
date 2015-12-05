@@ -3,7 +3,7 @@ require File.expand_path('../', __FILE__) + '/path/base'
 module Sapp
   class RouteMap
 
-    attr_accessor :routes
+    attr_reader :routes
 
     def initialize
       @routes = Hash.new
