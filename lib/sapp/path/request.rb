@@ -7,7 +7,7 @@ module Sapp
       attr_reader :routes, :verb, :handler, :keys, :path
 
       def initialize original, verb, routes
-        super(original)
+        @original = original
         @verb = verb
         @routes = routes
         @keys = Hash.new
