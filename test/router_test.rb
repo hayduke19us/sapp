@@ -13,14 +13,17 @@ class RouterTest < Minitest::Test
 
   def test_App
     get '/foo'
-    assert_equal 200, last_response
+    assert_equal 200, last_response.status
   end
 
-  focus
   def test_Resources
     get '/users'
     assert_equal 200, last_response.status
   end
 
+  def test_not_found_is_returned_if_no_path_is_found
+    get '/not_here_i_promise'
+    assert_equal 404, last_response.status
+  end
 
 end

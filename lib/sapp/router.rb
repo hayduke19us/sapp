@@ -7,7 +7,6 @@ module Sapp
     end
 
     def call env
-      byebug
       request = Rack::Request.new env
       found   = Array.new
 
