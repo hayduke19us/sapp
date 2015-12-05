@@ -24,6 +24,15 @@ module Sapp
       found.any? ? found.first : [ 404, {}, "Not found" ]
     end
 
+    def apps
+      @apps
+    end
+
+    private
+    def create app
+      @apps << app
+    end
+
     def duplicate_apps! 
       raise %[
         It seems you have multiple applications, with duplicate
@@ -33,15 +42,6 @@ module Sapp
 
         Check those classes, and remove duplicate routes.
       ]
-    end
-
-    def apps
-      @apps
-    end
-
-    private
-    def create app
-      @apps << app
     end
 
   end
