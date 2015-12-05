@@ -1,3 +1,4 @@
+require_relative 'router'
 require_relative 'routes'
 require_relative 'response'
 require_relative 'handler'
@@ -20,6 +21,7 @@ module Sapp
     # Support for Rails like resources with and CRUD methods
     extend Resources
 
+    # Single Application
     def self.call env
       req = Rack::Request.new env
       req_path = create_path req.path, req.request_method, routes
@@ -32,6 +34,7 @@ module Sapp
 
     end
 
+    # Multiple applications to be used with router
     def self.run req
       req_path = create_path req.path, req.request_method, routes
 
