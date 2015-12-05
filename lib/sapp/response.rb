@@ -35,7 +35,7 @@ module Sapp
 
     # If status at initialization use, else use default
     def create_tuple default_status, body
-      [status ? status : default_status, headers, body ]
+      [status ? status : default_status, headers, [body] ]
     end
 
   end
