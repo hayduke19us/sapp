@@ -2,6 +2,7 @@ require_relative 'routes'
 require_relative 'response'
 require_relative 'handler'
 require_relative 'resources'
+require 'json'
 
 require File.expand_path('../', __FILE__) + '/path/request'
 
@@ -21,19 +22,36 @@ module Sapp
 
     def self.call env
       req = Rack::Request.new env
-      req_path = Sapp::Path::Request.new req.path, req.request_method, routes
-      req_path.parse
+      req_path = create_path req.path, req.request_method, routes
 
       if req_path.path?
-        handler = Sapp::Handler.new req_path.handler, req, req_path.keys
-        unwrapped = handler.unwrap
-        response  = Sapp::Response.new handler.status, unwrapped
-
-        response.process_handler
+        find_path req_path, req
       else
-        not_found! req_path.verb, req_path.original
+         not_found! req_path.verb, req_path.original
       end
 
+    end
+
+    def self.run req
+      req_path = create_path req.path, req.request_method, routes
+
+      if req_path.path?
+        find_path req_path, req
+      end
+    end
+
+    def self.find_path req_path, req
+      handler   = Sapp::Handler.new req_path.handler, req, req_path.keys
+      unwrapped = handler.unwrap
+      response  = Sapp::Response.new handler.status, unwrapped
+
+      response.process_handler
+    end
+
+    def self.create_path path, method, routes
+      req_path = Sapp::Path::Request.new path, method, routes
+      req_path.parse
+      req_path
     end
 
   end
