@@ -50,10 +50,10 @@ class PathTest < Minitest::Test
   end
 
   def test_if_namespaces_options_is_given_it_is_added_to_path_hash
-    options = {options: { namespaces: ["users"] }}
+    options = {options: { namespaces: [["users"]] }}
 
     path = Sapp::Path::Base.new("/namespace", options)
-    assert_equal 'users', path.parse[:namespaces].first
+    assert_equal 'users', path.parse[:namespaces].flatten.first
   end
 
   private

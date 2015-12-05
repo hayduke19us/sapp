@@ -14,7 +14,6 @@ module Sapp
     end
 
     def set_namespace names, nest
-      byebug
       if nest && namespaces.any?
         @namespaces = namespaces << names
       else

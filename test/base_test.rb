@@ -104,10 +104,8 @@ class BaseTest < Minitest::Test
     assert_equal 200, last_response.status
   end
 
-  focus
   def test_namespaces_can_be_used_for_nesting
     @app = Mocks::Namespace
-    puts @app.routes
     get '/posts/users/2/friends'
     assert_equal 200, last_response.status
   end
