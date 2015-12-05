@@ -26,8 +26,7 @@ class RouterTest < Minitest::Test
     assert_equal 404, last_response.status
   end
 
-  focus
-  def test_replicate_routes_are_overwritten
+  def test_replicate_routes_raise_a_warning_but_run_by_order_found
     @app = Sapp::Router.new do
       create Mocks::Resources
       create Mocks::Crud

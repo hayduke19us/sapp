@@ -7,7 +7,6 @@ module Sapp
     end
 
     def call env
-      byebug
       request = Rack::Request.new env
       found   = Array.new
 
@@ -20,9 +19,9 @@ module Sapp
         duplicate_apps! if found.count > 1
       rescue => e
         puts e.message
-        found.any? ? found.first : [ 404, {}, "Not found" ]
       end
 
+      found.any? ? found.first : [ 404, {}, "Not found" ]
     end
 
     def duplicate_apps! 
