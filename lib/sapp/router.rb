@@ -7,6 +7,7 @@ module Sapp
     end
 
     def call env
+      byebug
       request = Rack::Request.new env
       found   = Array.new
 
@@ -15,7 +16,24 @@ module Sapp
         found << path if path
       end
 
-      found.any? ? found.first : [ 404, {}, "Not found" ]
+      begin
+        duplicate_apps! if found.count > 1
+      rescue => e
+        puts e.message
+        found.any? ? found.first : [ 404, {}, "Not found" ]
+      end
+
+    end
+
+    def duplicate_apps! 
+      raise %[
+        It seems you have multiple applications, with duplicate
+        routes.
+
+        --> Apps: #{apps.join(', ')}
+
+        Check those classes, and remove duplicate routes.
+      ]
     end
 
     def apps
