@@ -21,7 +21,7 @@ module Sapp
         puts e.message
       end
 
-      found.any? ? found.first : [ 404, {}, "Not found" ]
+      found.any? ? found.first : [ 404, {}, ["Not found"] ]
     end
 
     def apps
@@ -33,7 +33,7 @@ module Sapp
       @apps << app
     end
 
-    def duplicate_apps! 
+    def duplicate_apps!
       raise %[
         It seems you have multiple applications, with duplicate
         routes.
