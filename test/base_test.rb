@@ -110,4 +110,16 @@ class BaseTest < Minitest::Test
     assert_equal 200, last_response.status
   end
 
+  focus
+  def test_multi_nested_namespaces
+    @app = Mocks::NestedNamespace
+    get '/posts/users/3/articles/5/123214124'
+    assert_match(/articles/, last_response.body)
+
+    get '/posts/users/words/10/12-4-16/123214124'
+    assert_match(/words/, last_response.body)
+  end
+
+
+
 end

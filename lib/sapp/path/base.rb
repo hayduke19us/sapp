@@ -24,8 +24,17 @@ module Sapp
       end
 
       def set_original options, path
-        namespaces = options[:namespaces]
-        if options.any? && namespaces.any?
+        begin
+          if options[:namespaces] && options[:namespaces].count > 2
+            raise ArgumentError, "Routes nested too deeply"
+          else
+            concat_namespace_and_path path, options[:namespaces]
+          end
+        end
+      end
+
+      def concat_namespace_and_path path, namespaces
+        if namespaces && namespaces.any?
           x = namespace_to_path namespaces[0]
           y = namespaces[1] ? namespace_to_path(namespaces[1]) : ""
 

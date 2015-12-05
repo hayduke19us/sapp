@@ -90,4 +90,17 @@ module Mocks
     end
 
   end
+
+  class NestedNamespace < Sapp::Base
+    namespace 'posts', 'users'
+    get '/:id/articles/:id/:time' do
+      "Returns all articles"
+    end
+
+    namespace 'words', nest: true
+    get '/:limit/:date/:time' do
+      "Returns all words"
+    end
+
+  end
 end
