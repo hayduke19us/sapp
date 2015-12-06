@@ -126,6 +126,34 @@ Direct Mapping:
 
 ```
 
+Name spacing and opinionated nesting
+
+```ruby
+
+  namespace 'user'
+  
+  # '/user/:id' 
+  
+  get '/:id' do 
+
+	'One User'
+  
+  end
+
+  # /user/posts/:id
+
+  namespace 'posts', nested: true
+
+  get '/:id' do 
+
+	'One Post'
+  
+  end
+
+```
+
+
+
 ### Response Body
 The response may be a **String**, **Hash**, or **Array**
 
