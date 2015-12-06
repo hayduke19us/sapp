@@ -9,9 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["hayduke19us"]
   spec.email         = ["hayduke19us@gmail.com"]
 
-  spec.summary       = %q{A simple application framework for Rack}
-  # spec.description   = %q{TODO: Write a longer description or delete this line.}
-  # spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{A simple application framework for Rack.}
+  spec.description   = %q{ Supports Sinatra like blocks and Rails like
+                           resources.}
+  spec.homepage      = "http://github.com/haydukeus/sapp"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
