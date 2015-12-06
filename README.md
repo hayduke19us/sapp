@@ -10,7 +10,9 @@ in the process.
 **Module::Class( Mixins )**
 
 - Sapp
-	- Base( Resources, Routes)
+	- Base( Resources, Routes )
+	- Router
+	- RouteMap
     - Path
 		- Base
 		- Request
@@ -114,11 +116,11 @@ Direct Mapping:
 
 ```ruby
 
-  route 'GET', '/users', do
+  route 'GET', '/users' do
     'Get all users'
   end
 
-  add 'GET', '/users', do
+  add 'GET', '/users' do
     `Get all users`
   end
 
@@ -165,7 +167,7 @@ The response may be a **String**, **Hash**, or **Array**
 
 ```ruby
 
-  get '/users', do
+  get '/users' do
     set_status 200
   end
 
@@ -188,8 +190,64 @@ Access params normally.
     id = params[:id]
   end
 
-```
+  ```
+  
+### Multiple Applications 
 
+If you intend on using multiple Controllers for routing use the Sapp::Router.
+Initialize Sapp::Router in config.ru or in a seperate file that represents your
+routes. 
+
+```ruby 
+
+# users.rb
+
+require  'sapp'
+
+class Users < Sapp::Base 
+
+  resources 'users'
+
+  index 'users' do 
+    
+	'All Users'
+
+  end
+
+end
+
+# posts.rb
+
+class Posts < Sapp::Base 
+
+  resources 'post'
+
+  index 'posts' do 
+    
+	'All Posts'
+
+  end
+
+end
+
+end
+
+#config.ru 
+
+use RackcommonLogger
+
+app = Sapp::Router.new do 
+
+  create Users 
+
+  create Posts
+
+end
+
+run app
+
+```
+  
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
