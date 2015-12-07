@@ -37,6 +37,10 @@ Or install it yourself as:
 
     $ gem install sapp
 
+## Examples
+
+[Sapp with SimpleSession]( http://github.com/hayduke19us/sapp_test )
+
 ## Usage
 
 Sapp is meant to be sublcassed.
@@ -126,7 +130,7 @@ Direct Mapping:
 
 ```
 
-Name spacing and opinionated nesting
+Name spacing and opinionated nesting:
 
 ```ruby
 
@@ -151,6 +155,29 @@ Name spacing and opinionated nesting
   end
 
 ```
+
+Root:
+
+```ruby 
+
+  # Declare the root like a normal route 
+  
+  get '/' do 
+
+	"This is root"
+  
+  end
+  
+  # Declare the root with a simple method and block
+  
+  root do 
+  
+	"This is root"
+
+  end
+
+```
+
 
 
 
