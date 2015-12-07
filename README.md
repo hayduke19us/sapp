@@ -2,8 +2,7 @@
 ![build-tatus](https://travis-ci.org/hayduke19us/sapp.svg?branch=functional_version)
 
 Sapp is a simple application framework for [Rack]( http://rack.github.io/ ).
-It simplifies the routing process by handling route matching early
-in the process. 
+It simplifies the routing process by handling route matching early on.
 
 ### Architecture
 
