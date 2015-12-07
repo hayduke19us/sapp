@@ -245,7 +245,7 @@ Access params normally.
     id = params[:id]
   end
 
-  ```
+```
   
 ### Multiple Applications 
 
