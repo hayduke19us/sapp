@@ -119,6 +119,13 @@ class BaseTest < Minitest::Test
     assert_match(/words/, last_response.body)
   end
 
+  def test_root
+    @app = Mocks::Root
+    get '/'
+    assert_match(/Root/, last_response.body)
 
+    get '/not_root'
+    assert_match(/\ANot Root/, last_response.body)
+  end
 
 end

@@ -70,9 +70,13 @@ module Sapp
       end
 
       def setup_extraction
-        path = original.split('/')
-        path.delete("")
-        path
+        if original == '/'
+          [original]
+       else
+          path = original.split('/')
+          path.delete("")
+          path
+        end
       end
 
       def extract_keys_and_paths

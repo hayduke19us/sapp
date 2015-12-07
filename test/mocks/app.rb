@@ -103,4 +103,15 @@ module Mocks
     end
 
   end
+
+  class Root < Sapp::Base
+
+    root do
+      "Root"
+    end
+
+    get '/not_root' do
+      'Not Root'
+    end
+  end
 end

@@ -14,6 +14,10 @@ module Sapp
       route_map.set_namespace names, nest
     end
 
+    def root &block
+      get '/', &block
+    end
+
     def routes
       route_map.routes
     end

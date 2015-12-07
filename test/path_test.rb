@@ -95,4 +95,10 @@ class PathRequestTest < Minitest::Test
     refute path.path?
   end
 
+  def test_creating_a_root_path
+    path = Sapp::Path::Base.new("/")
+    path.parse
+    assert_equal '/', path.controller
+  end
+
 end
