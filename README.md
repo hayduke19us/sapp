@@ -87,7 +87,7 @@ Rails style CRUD methods:
     'Post a new user'
   end
 
-  Delete 'user' do
+  delete 'user' do
     'Delete a user'
   end
 
@@ -145,7 +145,7 @@ Name spacing and opinionated nesting:
 
   # /user/posts/:id
 
-  namespace 'posts', nested: true
+  namespace 'posts', nest: true
 
   get '/:id' do 
 
